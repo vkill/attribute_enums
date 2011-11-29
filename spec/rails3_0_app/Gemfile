@@ -5,8 +5,9 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 gem "attribute_enums", :path => '../../'
 
+gem 'pry'
+
 group :development do
-  gem 'pry'
   gem 'pry-padrino'
 end
 
