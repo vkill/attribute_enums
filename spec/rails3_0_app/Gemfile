@@ -1,0 +1,12 @@
+source 'http://rubygems.org'
+
+gem 'rails', '3.0.11'
+gem 'sqlite3-ruby', :require => 'sqlite3'
+
+gem "attribute_enums", :path => '../../'
+
+group :development do
+  gem 'pry'
+  gem 'pry-padrino'
+end
+

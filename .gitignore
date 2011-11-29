@@ -2,3 +2,8 @@
 .bundle
 Gemfile.lock
 pkg/*
+
+
+spec/rails3_0_app/db/*.sqlite3
+spec/rails3_0_app/log/*
+spec/rails3_0_app/tmp/*

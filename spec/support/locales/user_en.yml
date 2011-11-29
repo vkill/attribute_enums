@@ -1,0 +1,16 @@
+en:
+  activerecord: #active_record
+    models:
+      user: User
+    attributes:
+      user:
+        gender: Gender
+        enable: Enable
+        enums:
+          gender:
+            female: Girl
+            male: Boy
+          enable:
+            "true": "Yes"
+            "false": "No"
+
