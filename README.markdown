@@ -119,6 +119,10 @@ default `true`
 if your defined `default`, it set attribute `default` value before validate.
 
 
+##Run test for development
+
+    > guard
+
 
 ##Copyright
 

@@ -20,6 +20,14 @@ describe User do
     before {
       User.attribute_enums :enable, :booleans => true
     }
+    it { User.enable.new.enable.should == true }
+    it { User.not_enable.new.enable.should == false }
+    it { User.get_enable_values.should == [[true, "Yes"], [false, "No"]] }
+    it { User.enable_values.should == {true=>"Yes", false=>"No"} }
+
+    user = User.create(:enable => true)
+    it { user.enable_text.should == "Yes" }
+    it { user.enable.should be_true }
   end
 end
 
