@@ -17,6 +17,7 @@ module AttributeEnums
         booleans = options.delete(:booleans) || false
         default = options.delete(:default) || (booleans ? true : "")
 
+        return if !self.table_exists? or !self.respond_to?(:column_names)
         raise "attribute #{ attribute_name } does not exist." unless column_names.index(attribute_name)
         raise "in/within and booleans has one and only one exist." if (!within.blank? and !booleans.blank?) or
                                                                (within.blank? and booleans.blank?)
