@@ -26,7 +26,7 @@ module AttributeEnums
           within.keep_if{|x| x.respond_to?("to_sym")}.collect!(&:to_s)
         end
 
-        attribute_values = Hash[ within.map {|x| [ x, i18n ? human_attribute_name(:"enums.#{ attribute_name }.#{ x }") : x ]} ]
+        attribute_values = Hash[ within.map {|x| [ x, i18n ? I18n.translate(:"#{self.i18n_scope}.enums.#{self.model_name.underscore}.#{ attribute_name }.#{ x }") : x ]} ]
         eval(%Q`class_attribute :#{ attribute_name}_values`)
         eval(%Q`self.#{ attribute_name}_values = #{ attribute_values }`)
 

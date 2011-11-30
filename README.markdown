@@ -60,27 +60,29 @@ default `[]`
 
 if use this, please don't use `booleans`.
 
-###i18n
+###i18n and use example
 
 default `true`
 
+    # in config/locales/enums_en.yml
     en:
-      activerecord: #active_record
+      activerecord:
         models:
           user: User
         attributes:
           user:
             gender: Gender
             enable: Enable
-            enums:
-              gender:
-                female: Girl
-                male: Boy
-              enable:
-                "true": "Yes"
-                "false": "No"
+        enums:
+          user:
+            gender:
+              female: Girl
+              male: Boy
+            enable:
+              "true": "Yes"
+              "false": "No"
 
-###scopes
+###scopes and use example
 
 default `true`
 
@@ -98,7 +100,7 @@ default `false`
 
 default `true`
 
-###methods
+###methods and use example
 
 default `true`
 
