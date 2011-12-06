@@ -1,3 +1,7 @@
+== 0.1.4
+
+* fix get_x_values bug
+
 == 0.1.3
 
 * fix when migrate tables don't exist, use model.column_names bug
