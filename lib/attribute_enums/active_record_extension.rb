@@ -52,7 +52,7 @@ module AttributeEnums
         end
 
         if methods
-          eval(%Q`def get_#{ attribute_name }_values; self.#{ attribute_name}_values.to_a; end`)
+          eval(%Q`def get_#{ attribute_name }_values; self.#{ attribute_name}_values.map {|k,v| [v,k]}; end`)
           if booleans
             class_eval(%Q`def #{ attribute_name }_text; self.class.#{ attribute_name}_values[read_attribute("#{ attribute_name }")]; end`)
           else

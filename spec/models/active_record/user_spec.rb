@@ -7,7 +7,7 @@ describe User do
     }
     it { User.male.new.gender.should == "male" }
     it { User.female.new.gender.should == "female" }
-    it { User.get_gender_values.should == [["female", "Girl"], ["male", "Boy"]] }
+    it { User.get_gender_values.should == [["Girl", "female"], ["Boy", "male"]] }
     it { User.gender_values.should == {"female"=>"Girl", "male"=>"Boy"} }
 
     user = User.create(:gender => :male)
@@ -22,7 +22,7 @@ describe User do
     }
     it { User.enable.new.enable.should == true }
     it { User.not_enable.new.enable.should == false }
-    it { User.get_enable_values.should == [[true, "Yes"], [false, "No"]] }
+    it { User.get_enable_values.should == [["Yes", true], ["No", false]] }
     it { User.enable_values.should == {true=>"Yes", false=>"No"} }
 
     user = User.create(:enable => true)
