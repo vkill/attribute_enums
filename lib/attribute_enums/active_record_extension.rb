@@ -50,15 +50,14 @@ module AttributeEnums
 
         
         if use_validate
-          if allow_blank
-            validates attribute_name, :presence => true
+          if booleans
+            validates attribute_name, :inclusion => { :in => [true, false] }
           else
-            if booleans
-              validates attribute_name, :inclusion => { :in => [true, false] }
-            else
-              validates attribute_name, :inclusion => { :in => within + within.collect{|x| x.to_sym} },
-                                    :if => eval(%Q`Proc.new { |record| record.#{ attribute_name }? }`)
+            unless allow_blank
+              validates attribute_name, :presence => true
             end
+            validates attribute_name, :inclusion => { :in => within + within.collect{|x| x.to_sym} },
+                                  :if => eval(%Q`Proc.new { |record| record.#{ attribute_name }? }`)
           end
         end
 

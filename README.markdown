@@ -98,7 +98,7 @@ default `true`
 
 ###allow_blank
 
-default `false`, is valid with validate == true
+default `false`, is valid with validate == true and in/within == true
 
 ###methods and use example
 

@@ -1,3 +1,7 @@
+== 0.1.7
+
+* fix allow_blank bug
+
 == 0.1.6
 
 * fix boolean validate inclusion bug
