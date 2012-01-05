@@ -1,3 +1,7 @@
+== 0.1.5
+
+* fix boolean default bug
+
 == 0.1.4
 
 * fix get_x_values bug

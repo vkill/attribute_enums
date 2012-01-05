@@ -9,12 +9,26 @@ describe User do
     it { User.female.new.gender.should == "female" }
     it { User.get_gender_values.should == [["Girl", "female"], ["Boy", "male"]] }
     it { User.gender_values.should == {"female"=>"Girl", "male"=>"Boy"} }
-
-    user = User.create(:gender => :male)
+    
+    let(:user) { User.create(:gender => :male) }
     it { user.gender_text.should == "Boy" }
     it { user.male?.should be_true }
     it { user.female?.should be_false }
+    
+    #:in default == nil
+    it { User.create.gender.should be_nil }
   end
+  
+  context "test :in and :default" do
+    before {
+      User.attribute_enums :gender, :in => [:female, :male], :default => :female
+    }
+    let(:user) { User.create() }
+    it { user.gender.should_not be_nil }
+    it { user.gender.should == "female" }
+    it { user.gender_text.should == "Girl" }
+  end
+  
 
   context "test :booleans" do
     before {
@@ -24,10 +38,23 @@ describe User do
     it { User.not_enable.new.enable.should == false }
     it { User.get_enable_values.should == [["Yes", true], ["No", false]] }
     it { User.enable_values.should == {true=>"Yes", false=>"No"} }
-
-    user = User.create(:enable => true)
-    it { user.enable_text.should == "Yes" }
+    
+    let(:user) { User.create(:enable => true) }
     it { user.enable.should be_true }
+    it { user.enable_text.should == "Yes" }
+    
+    #:booleans default == true
+    it { User.create.enable.should be_true }
+  end
+  
+  context "test :booleans and :default" do
+    before {
+      User.attribute_enums :enable, :booleans => true, :default => false
+    }    
+    let(:user) { User.create() }
+    it { user.enable.should be_false }
+    it { user.enable.should_not be_nil }
+    it { user.enable_text.should == "No" }
   end
 end
 

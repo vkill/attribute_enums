@@ -15,8 +15,11 @@ module AttributeEnums
         methods = options.delete(:methods) || true
         i18n = options.delete(:i18n) || true
         booleans = options.delete(:booleans) || false
-        default = options.delete(:default) || (booleans ? true : "")
-
+        default_value = options.delete(:default)
+        default_value = true if default_value.nil? and booleans
+        raise "if booleans, default must be in true/false" if booleans and ![true, false].index(default_value)
+        default = default_value.nil? ? false : true
+        
         return if !self.table_exists? or !self.respond_to?(:column_names)
         raise "attribute #{ attribute_name } does not exist." unless column_names.index(attribute_name)
         raise "in/within and booleans has one and only one exist." if (!within.blank? and !booleans.blank?) or
@@ -65,9 +68,9 @@ module AttributeEnums
 
         if default
           if booleans
-            class_eval(%Q`def set_default_for_attr_#{ attribute_name }; self.#{ attribute_name } ||= #{ !default.blank? }; end`)
+            class_eval(%Q`def set_default_for_attr_#{ attribute_name }; v = read_attribute("#{ attribute_name }");  self.#{ attribute_name } = (v.nil? ? #{ !default_value.blank? } : v) ; end`)
           else
-            class_eval(%Q`def set_default_for_attr_#{ attribute_name }; self.#{ attribute_name } ||= "#{ default.to_s }"; end`)
+            class_eval(%Q`def set_default_for_attr_#{ attribute_name }; self.#{ attribute_name } ||= "#{ default_value.to_s }"; end`)
           end
           eval(%Q`before_validation :set_default_for_attr_#{ attribute_name }`)
         end
