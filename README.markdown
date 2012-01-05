@@ -92,13 +92,13 @@ default `true`
     User.enable       => User.where(:enable => true)
     User.not_enable   => User.where(:enable => false)
 
-###allow_blank
-
-default `false`
-
 ###validate
 
 default `true`
+
+###allow_blank
+
+default `false`, is valid with validate == true
 
 ###methods and use example
 
@@ -119,6 +119,8 @@ default `true`
 ###default
 
 if your defined `default`, it set attribute `default` value before validate.
+
+Note: if your migration defined field default, this is invalidation.
 
 
 ##Run test for development

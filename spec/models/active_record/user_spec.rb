@@ -26,7 +26,6 @@ describe User do
     let(:user) { User.create() }
     it { user.gender.should_not be_nil }
     it { user.gender.should == "female" }
-    it { user.gender_text.should == "Girl" }
   end
   
 
@@ -47,14 +46,22 @@ describe User do
     it { User.create.enable.should be_true }
   end
   
-  context "test :booleans and :default" do
+  context "test :booleans and :default => false" do
     before {
       User.attribute_enums :enable, :booleans => true, :default => false
     }    
     let(:user) { User.create() }
     it { user.enable.should be_false }
     it { user.enable.should_not be_nil }
-    it { user.enable_text.should == "No" }
+  end
+  
+  context "test :booleans and :default => true" do
+    before {
+      User.attribute_enums :enable, :booleans => true, :default => true
+    }    
+    let(:user) { User.create() }
+    it { user.enable.should be_true }
+    it { user.enable.should_not be_nil }
   end
 end
 
