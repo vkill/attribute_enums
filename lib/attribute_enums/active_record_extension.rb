@@ -1,6 +1,5 @@
 module AttributeEnums
   module ActiveRecordExtension
-    extend ActiveSupport::Concern
     included do
       extend ClassMethods
     end
@@ -82,8 +81,6 @@ module AttributeEnums
           eval(%Q`before_validation :set_default_for_attr_#{ attribute_name }`)
         end
       end
-    end
-    module InstanceMethods
     end
   end
 
