@@ -1,8 +1,8 @@
 module AttributeEnums
   module ActiveRecordExtension
-    included do
-      extend ClassMethods
-    end
+    
+    extend ActiveSupport::Concern
+
     module ClassMethods
       def attribute_enums(attribute_name, *options, &block)
         attribute_name = attribute_name.to_s
