@@ -2,8 +2,6 @@
 .bundle
 Gemfile.lock
 pkg/*
+.rvmrc
 
 
-spec/rails3_0_app/db/*.sqlite3
-spec/rails3_0_app/log/*
-spec/rails3_0_app/tmp/*

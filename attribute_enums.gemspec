@@ -18,20 +18,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency "rake"
+  s.add_development_dependency "activemodel"
+  s.add_development_dependency "activesupport"
+  s.add_development_dependency "i18n"
   s.add_development_dependency "rspec"
-  s.add_development_dependency "guard-rspec"
-
-  s.add_development_dependency "rails", "~> 3.0"
-  s.add_development_dependency "sqlite3-ruby"
-  s.add_development_dependency "rspec-rails", "~> 2.7.0"
-  s.add_development_dependency "capybara"
-  s.add_development_dependency "timecop"
-  s.add_development_dependency "pry"
-  s.add_development_dependency "pry-padrino"
-
-  s.add_dependency "activerecord", "~> 3.0"
-  s.add_dependency "activesupport", "~> 3.0"
+  
 end
-

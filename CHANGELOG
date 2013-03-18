@@ -1,3 +1,7 @@
+== 1.0.0
+
+* 
+
 == 0.1.8
 
 * fix 'DEPRECATION WARNING: The InstanceMethods module inside ActiveSupport::Concern will be no longer included automatically.'

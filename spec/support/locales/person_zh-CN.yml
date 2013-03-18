@@ -1,0 +1,14 @@
+'zh-CN':
+  enums:
+    gender:
+      female: 女
+      male: 男
+    enable:
+      "true": "是"
+      "false": "否"
+    person_gender:
+      female: 女
+      male: 男
+    person_enable:
+      "true": "是"
+      "false": "否"

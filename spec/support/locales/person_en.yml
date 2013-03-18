@@ -1,0 +1,14 @@
+en:
+  enums:
+    gender:
+      female: Girl
+      male: Boy
+    enable:
+      "true": "Yes"
+      "false": "No"
+    person_gender:
+      female: Girl
+      male: Boy
+    person_enable:
+      "true": "Yes"
+      "false": "No"
