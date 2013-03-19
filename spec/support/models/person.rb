@@ -3,7 +3,7 @@ require 'active_support/all'
 
 class Person
 
-  attr_accessor :gender
+  attr_accessor :gender, :enable
 
   include ActiveModel::AttributeMethods
   attribute_method_suffix '?'
@@ -11,11 +11,23 @@ class Person
 
   include ActiveModel::Validations
 
-  private
+  extend ActiveModel::Callbacks
+  define_model_callbacks :validation
 
+  private
+  
   def attribute?(attr)
     send(attr).present?
   end
+
+  def read_attribute(attr)
+    send(attr)
+  end
+
+  def write_attribute(attr, value)
+    send("#{attr}=", value)
+  end
+
 
 end
 

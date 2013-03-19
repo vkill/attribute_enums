@@ -7,7 +7,7 @@ describe ":methods options" do
       let(:model_klass) do
         _person = Person.dup
         _person.instance_eval do
-          include AttributeEnums
+          include AttributeEnums::ActiveRecord
           attribute_enums :gender, in: [:male, :female], methods: true
         end
         _person
@@ -16,8 +16,8 @@ describe ":methods options" do
       subject { model_klass.new }
 
       it do
-        subject.should respond_to?(:male?)
-        subject.should respond_to?(:female?)
+        subject.should respond_to(:male?)
+        subject.should respond_to(:female?)
       end
       it do
         subject.gender = :male
@@ -31,7 +31,7 @@ describe ":methods options" do
       let(:model_klass) do
         _person = Person.dup
         _person.instance_eval do
-          include AttributeEnums
+          include AttributeEnums::ActiveRecord
           attribute_enums :gender, in: [:male, :female], methods: {prefix: 'gender_'}
         end
         _person
@@ -40,7 +40,7 @@ describe ":methods options" do
       subject { model_klass.new }
 
       it do
-        subject.should respond_to?(:gender_male?)
+        subject.should respond_to(:gender_male?)
       end
       it do
         subject.gender = :male

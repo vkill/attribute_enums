@@ -1,10 +1,10 @@
-require 'attribute_enums/active_record_extension'
+require 'attribute_enums/active_record'
 
 module AttributeEnums
   class Railtie < ::Rails::Railtie
     initializer 'attribute_enums' do |app|
       ActiveSupport.on_load :active_record do
-        include AttributeEnums::ActiveRecordExtension
+        include AttributeEnums::ActiveRecord::ActiveRecord
       end
     end
   end

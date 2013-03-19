@@ -6,7 +6,7 @@ describe ":validate options" do
     let(:model_klass) do
       _person = Person.dup
       _person.instance_eval do
-        include AttributeEnums
+        include AttributeEnums::ActiveRecord
         attribute_enums :gender, in: [:male, :female], validate: true
       end
       _person
@@ -30,18 +30,37 @@ describe ":validate options" do
       it do
         subject.gender = nil
         subject.valid?
-        subject.errors[:gender].shoud_not be_nil
+        subject.errors[:gender].should_not be_nil
       end
       it do
         subject.gender = :unknow
         subject.valid?
-        subject.errors[:gender].shoud_not be_nil
+        subject.errors[:gender].should_not be_nil
       end
       it do
         I18n.stub(:translate).and_return('mock_error')
         subject.gender = :unknow
         subject.valid?
         subject.errors[:gender].should == ['mock_error']
+      end
+    end
+
+    describe "allow_nil" do
+      let(:model_klass) do
+        _person = Person.dup
+        _person.instance_eval do
+          include AttributeEnums::ActiveRecord
+          attribute_enums :gender, in: [:male, :female], validate: {allow_nil: true}
+        end
+        _person
+      end
+
+      subject { model_klass.new }
+
+      it do
+        subject.gender = nil
+        subject.valid?
+        subject.errors[:gender].should be_nil
       end
     end
   end
@@ -51,7 +70,7 @@ describe ":validate options" do
     let(:model_klass) do
       _person = Person.dup
       _person.instance_eval do
-        include AttributeEnums
+        include AttributeEnums::ActiveRecord
         attribute_enums :enable, boolean: true, validate: true
       end
       _person
@@ -75,18 +94,36 @@ describe ":validate options" do
       it do
         subject.enable = nil
         subject.valid?
-        subject.errors[:enable].shoud_not be_nil
+        subject.errors[:enable].should_not be_nil
       end
       it do
         subject.enable = :unknow
         subject.valid?
-        subject.errors[:enable].shoud_not be_nil
+        subject.errors[:enable].should_not be_nil
       end
       it do
         I18n.stub(:translate).and_return('mock_error')
         subject.enable = :unknow
         subject.valid?
         subject.errors[:enable].should == ['mock_error']
+      end
+    end
+    describe "allow_nil" do
+      let(:model_klass) do
+        _person = Person.dup
+        _person.instance_eval do
+          include AttributeEnums::ActiveRecord
+          attribute_enums :enable, boolean: true, validate: true, allow_blank: true
+        end
+        _person
+      end
+
+      subject { model_klass.new }
+
+      it do
+        subject.enable = nil
+        subject.valid?
+        subject.errors[:enable].should be_nil
       end
     end
   end
