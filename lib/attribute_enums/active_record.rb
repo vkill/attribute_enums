@@ -54,8 +54,9 @@ module AttributeEnums
 
       def _attribute_name_set_i18n_text
         define_method _attribute_enums_i18n_text_method_name do
+          return nil if read_attribute(@_attribute_name).nil?
           I18n.translate(('enums.%s%s.%s' % [self.class.send(:_attribute_enums_i18n_t_prefix), @_attribute_name, read_attribute(@_attribute_name)]).to_sym)
-        end 
+        end
       end
 
     end

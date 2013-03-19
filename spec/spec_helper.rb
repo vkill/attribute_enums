@@ -4,6 +4,7 @@ require "bundler/setup"
 
 require "attribute_enums/active_record"
 require 'i18n'
+require 'pry'
 
 I18n.load_path << Dir[ File.expand_path("../support/locales/**/*.{rb,yml}", __FILE__) ]
 I18n.reload!
