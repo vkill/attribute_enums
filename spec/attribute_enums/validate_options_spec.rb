@@ -18,24 +18,24 @@ describe ":validate options" do
       it do
         subject.gender = :male
         subject.valid?
-        subject.errors[:gender].should be_nil
+        subject.errors[:gender].should == []
       end
       it do
         subject.gender = 'female'
         subject.valid?
-        subject.errors[:gender].should be_nil
+        subject.errors[:gender].should == []
       end
     end
     context "invalid" do
       it do
         subject.gender = nil
         subject.valid?
-        subject.errors[:gender].should_not be_nil
+        subject.errors[:gender].should_not == []
       end
       it do
         subject.gender = :unknow
         subject.valid?
-        subject.errors[:gender].should_not be_nil
+        subject.errors[:gender].should_not == []
       end
       it do
         I18n.stub(:translate).and_return('mock_error')
@@ -60,7 +60,7 @@ describe ":validate options" do
       it do
         subject.gender = nil
         subject.valid?
-        subject.errors[:gender].should be_nil
+        subject.errors[:gender].should == []
       end
     end
   end
@@ -82,24 +82,24 @@ describe ":validate options" do
       it do
         subject.enable = true
         subject.valid?
-        subject.errors[:enable].should be_nil
+        subject.errors[:enable].should == []
       end
       it do
         subject.enable = false
         subject.valid?
-        subject.errors[:enable].should be_nil
+        subject.errors[:enable].should == []
       end
     end
     context "invalid" do
       it do
         subject.enable = nil
         subject.valid?
-        subject.errors[:enable].should_not be_nil
+        subject.errors[:enable].should_not == []
       end
       it do
         subject.enable = :unknow
         subject.valid?
-        subject.errors[:enable].should_not be_nil
+        subject.errors[:enable].should_not == []
       end
       it do
         I18n.stub(:translate).and_return('mock_error')
@@ -123,7 +123,7 @@ describe ":validate options" do
       it do
         subject.enable = nil
         subject.valid?
-        subject.errors[:enable].should be_nil
+        subject.errors[:enable].should == []
       end
     end
   end

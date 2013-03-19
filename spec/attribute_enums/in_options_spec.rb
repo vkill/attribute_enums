@@ -13,6 +13,4 @@ describe ":in options" do
 
   subject { model_klass.new }
 
-  it { model_klass.get_gender_values.should == [['female', 'female'], ['male', 'male']] }
-  
 end

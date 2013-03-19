@@ -13,6 +13,5 @@ describe ":boolean options" do
 
   subject { model_klass.new }
 
-  it { model_klass.get_enable_values.should == [['Yes', true], ['No', false]] }
-  
+
 end

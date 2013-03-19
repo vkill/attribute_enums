@@ -26,7 +26,7 @@ module AttributeEnums
       def _attribute_enums_set_string_methods
         @_in.each do |_in|
           define_method _attribute_enums_methods_string_attribute_method_name(_in) do
-            read_attribute(@_attribute_name).to_sym == _in.to_sym
+            read_attribute(@_attribute_name).to_s == _in.to_s
           end
         end
       end

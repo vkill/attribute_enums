@@ -2,9 +2,6 @@ module AttributeEnums
   module Common
     def attribute_enums(attribute_name, options={})
       @_attribute_name = attribute_name.to_s
-      unless instance_methods.include?(@_attribute_name.to_sym) and instance_methods.include?("#{@_attribute_name}=".to_sym)
-        raise "'#{@_attribute_name}' or '#{@_attribute_name}=' method missing"
-      end
 
       @_in = options.has_key?(:in) ? Array(options.delete(:in)) : []
       @_boolean = options.has_key?(:_boolean) ? options.delete(:boolean) : false
@@ -26,7 +23,7 @@ module AttributeEnums
       end
 
       unless @_default.nil?
-        raise 'default value not match' unless @_in.include?(@_default)
+        raise 'default value not match' unless @_inclusion.include?(@_default)
       end
 
       if @_boolean
@@ -89,12 +86,19 @@ module AttributeEnums
 
 
     def _attribute_name_set_i18n
-      define_singleton_method _attribute_enums_i18n_values_method_name do
-        @_in.map do |_in|
-          [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in.to_s]
-        end.sort
+      if @_boolean
+        define_singleton_method _attribute_enums_i18n_values_method_name do
+          @_in.map do |_in|
+            [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in]
+          end.sort
+        end
+      else
+        define_singleton_method _attribute_enums_i18n_values_method_name do
+          @_in.map do |_in|
+            [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in.to_s]
+          end.sort
+        end
       end
-
       _attribute_name_set_i18n_text
     end
 

@@ -1,33 +1,15 @@
-require 'active_model'
-require 'active_support/all'
+require 'active_record'
+require 'sqlite3'
 
-class Person
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
-  attr_accessor :gender, :enable
-
-  include ActiveModel::AttributeMethods
-  attribute_method_suffix '?'
-  define_attribute_methods ['gender']
-
-  include ActiveModel::Validations
-
-  extend ActiveModel::Callbacks
-  define_model_callbacks :validation
-
-  private
-  
-  def attribute?(attr)
-    send(attr).present?
+ActiveRecord::Schema.define do
+  create_table "persons", :force => true do |t|
+    t.string :gender
+    t.boolean :enable
   end
-
-  def read_attribute(attr)
-    send(attr)
-  end
-
-  def write_attribute(attr, value)
-    send("#{attr}=", value)
-  end
-
-
+end
+class Person < ActiveRecord::Base
+  self.table_name = "persons"
 end
 
