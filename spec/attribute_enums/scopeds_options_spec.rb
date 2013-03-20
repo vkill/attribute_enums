@@ -18,8 +18,10 @@ describe ":scopeds options" do
         model_klass.should respond_to(:female)
       end
       it do
-        model_klass.stub(:where).with(gender: :male).and_return([:mock_person])
-        model_klass.male.should == [:mock_person]
+        gender_a = model_klass.create!(gender: :male)
+        gender_b = model_klass.create!(gender: :male)
+        gender_c = model_klass.create!(gender: :female)
+        model_klass.male.map(&:id).should == [gender_a.id, gender_b.id]
       end
     end
   
@@ -38,8 +40,11 @@ describe ":scopeds options" do
         model_klass.should respond_to(:gender_male)
       end
       it do
-        model_klass.stub(:where).with(gender: :male).and_return([:mock_person])
-        model_klass.gender_male.should == [:mock_person]
+        model_klass.delete_all
+        gender_a = model_klass.create!(gender: :male)
+        gender_b = model_klass.create!(gender: :male)
+        gender_c = model_klass.create!(gender: :female)
+        model_klass.gender_male.map(&:id).should == [gender_a.id, gender_b.id]
       end
     end
   end
@@ -60,8 +65,11 @@ describe ":scopeds options" do
         model_klass.should respond_to(:enable)
       end
       it do
-        model_klass.stub(:where).with(enable: true).and_return([:mock_person])
-        model_klass.enable.should == [:mock_person]
+        model_klass.delete_all
+        gender_a = model_klass.create!(enable: true)
+        gender_b = model_klass.create!(enable: true)
+        gender_c = model_klass.create!(enable: false)
+        model_klass.enable.map(&:id).should == [gender_a.id, gender_b.id]
       end
     end
 
@@ -79,16 +87,22 @@ describe ":scopeds options" do
         model_klass.should respond_to(:enable)
       end
       it do
-        model_klass.stub(:where).with(enable: true).and_return([:mock_person])
-        model_klass.enable.should == [:mock_person]
+        model_klass.delete_all
+        gender_a = model_klass.create!(enable: true)
+        gender_b = model_klass.create!(enable: true)
+        gender_c = model_klass.create!(enable: false)
+        model_klass.enable.map(&:id).should == [gender_a.id, gender_b.id]
       end
 
       it do
         model_klass.should respond_to(:disable)
       end
       it do
-        model_klass.stub(:where).with(enable: false).and_return([:mock_person])
-        model_klass.disable.should == [:mock_person]
+        model_klass.delete_all
+        gender_a = model_klass.create!(enable: true)
+        gender_b = model_klass.create!(enable: true)
+        gender_c = model_klass.create!(enable: false)
+        model_klass.disable.map(&:id).should == [gender_c.id]
       end
     end
   end

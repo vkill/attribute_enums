@@ -33,7 +33,9 @@ module AttributeEnums
 
       def _attribute_enums_set_string_scopeds
         @_in.each do |_in|
-          scope _attribute_enums_scopeds_string_attribute_method_name(_in), ->{ where(@_attribute_name => _in) }
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            scope :#{_attribute_enums_scopeds_string_attribute_method_name(_in)}, ->{ where(#{@_attribute_name}: :#{_in}) }
+          RUBY
         end
       end
       

@@ -51,7 +51,7 @@ module AttributeEnums
     def _attribute_enums_methods_string_attribute_method_name(_in)
       prefix = ''
       if @_methods.is_a?(Hash)
-        _prefix = @_methods.delete(:prefix)
+        _prefix = @_methods[:prefix]
         if (_prefix.is_a?(String) or _prefix.is_a?(Symbol)) and !_prefix.empty?
           prefix = _prefix
         end
@@ -62,7 +62,7 @@ module AttributeEnums
     def _attribute_enums_scopeds_string_attribute_method_name(_in)
       prefix = ''
       if @_scopeds.is_a?(Hash)
-        _prefix = @_scopeds.delete(:prefix)
+        _prefix = @_scopeds[:prefix]
         if _attribute_enums_valid_prefix?(_prefix)
           prefix = _prefix
         end
@@ -81,7 +81,7 @@ module AttributeEnums
     def _attribute_enums_i18n_t_prefix
       t_prefix = ''
       if @_scopeds.is_a?(Hash)
-        _t_prefix = @_scopeds.delete(:t_prefix)
+        _t_prefix = @_scopeds[:t_prefix]
         t_prefix = _t_prefix if _attribute_enums_valid_prefix?(_t_prefix)
       end
       t_prefix
