@@ -4,12 +4,13 @@ module AttributeEnums
       @_attribute_name = attribute_name.to_s
 
       @_in = options.has_key?(:in) ? Array(options.delete(:in)) : []
-      @_boolean = options.has_key?(:_boolean) ? options.delete(:boolean) : false
+      @_boolean = options.has_key?(:boolean) ? options.delete(:boolean) : false
       @_default = options.has_key?(:default) ? options.delete(:default).to_s : nil
       @_methods = options.has_key?(:methods) ? options.delete(:methods) : false
       @_scopeds = options.has_key?(:scopeds) ? options.delete(:scopeds) : false
       @_validate = options.has_key?(:validate) ? options.delete(:validate) : false
       @_i18n = options.has_key?(:i18n) ? options.delete(:i18n) : false
+
 
       # build _in
       if @_boolean
@@ -26,10 +27,12 @@ module AttributeEnums
         raise 'default value not match' unless @_inclusion.include?(@_default)
       end
 
+
       if @_boolean
         _attribute_enums_set_default unless @_default.nil?
         _attribute_enums_set_boolean_scopeds if @_scopeds
         _attribute_name_set_validate if @_validate
+
         _attribute_name_set_i18n if @_i18n and defined?(::I18n)
       else
         _attribute_enums_set_default unless @_default.nil?
@@ -99,6 +102,7 @@ module AttributeEnums
           end.sort
         end
       end
+
       _attribute_name_set_i18n_text
     end
 

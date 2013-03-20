@@ -13,4 +13,4 @@ class Person < ActiveRecord::Base
   self.table_name = "persons"
 end
 
-binding.pry
+# binding.pry
