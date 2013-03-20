@@ -45,6 +45,11 @@ describe ":validate options" do
         subject.valid?
         subject.errors[:gender].should == ['mock_error']
       end
+      it do
+        subject.gender = :unknow
+        subject.valid?
+        subject.errors[:gender][0].should match(/is not included in the list/)
+      end
     end
 
     describe "allow_nil" do
