@@ -11,6 +11,8 @@ ActiveRecord::Schema.define do
 end
 class Person < ActiveRecord::Base
   self.table_name = "persons"
+
+  @_model_name = "Person"
 end
 
 # binding.pry

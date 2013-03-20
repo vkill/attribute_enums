@@ -5,7 +5,7 @@ module AttributeEnums
 
       @_in = options.has_key?(:in) ? Array(options.delete(:in)) : []
       @_boolean = options.has_key?(:boolean) ? options.delete(:boolean) : false
-      @_default = options.has_key?(:default) ? options.delete(:default).to_s : nil
+      @_default = options.has_key?(:default) ? options.delete(:default) : nil
       @_methods = options.has_key?(:methods) ? options.delete(:methods) : false
       @_scopeds = options.has_key?(:scopeds) ? options.delete(:scopeds) : false
       @_validate = options.has_key?(:validate) ? options.delete(:validate) : false
@@ -27,18 +27,27 @@ module AttributeEnums
         raise 'default value not match' unless @_inclusion.include?(@_default)
       end
 
+      _attribute_enums_set_default unless @_default.nil?
+      if @_scopeds
+        if @_boolean
+          _attribute_enums_set_boolean_scopeds
+        else
+          _attribute_enums_set_string_scopeds
+        end
+      end
 
-      if @_boolean
-        _attribute_enums_set_default unless @_default.nil?
-        _attribute_enums_set_boolean_scopeds if @_scopeds
-        _attribute_name_set_validate if @_validate
+      if @_i18n and defined?(::I18n)
+        if @_boolean
+          _attribute_name_set_boolean_i18n
+        else
+          _attribute_name_set_string_i18n
+        end
+        _attribute_name_set_i18n_text
+      end
 
-        _attribute_name_set_i18n if @_i18n and defined?(::I18n)
-      else
-        _attribute_enums_set_default unless @_default.nil?
+      unless @_boolean
         _attribute_enums_set_string_methods if @_methods
-        _attribute_enums_set_string_scopeds if @_scopeds
-        _attribute_name_set_i18n if @_i18n and defined?(::I18n)
+        _attribute_name_set_string_validate if @_validate
       end
     end
 
@@ -88,23 +97,23 @@ module AttributeEnums
     end
 
 
-    def _attribute_name_set_i18n
-      if @_boolean
-        define_singleton_method _attribute_enums_i18n_values_method_name do
-          @_in.map do |_in|
-            [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in]
-          end.sort
-        end
-      else
-        define_singleton_method _attribute_enums_i18n_values_method_name do
-          @_in.map do |_in|
-            [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in.to_s]
-          end.sort
-        end
+    def _attribute_name_set_boolean_i18n
+      define_singleton_method _attribute_enums_i18n_values_method_name do
+        @_in.map do |_in|
+          [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in]
+        end.sort
       end
-
-      _attribute_name_set_i18n_text
     end
+
+    def _attribute_name_set_string_i18n
+      define_singleton_method _attribute_enums_i18n_values_method_name do
+        @_in.map do |_in|
+          [I18n.translate(('enums.%s%s.%s' % [_attribute_enums_i18n_t_prefix, @_attribute_name, _in]).to_sym), _in.to_s]
+        end.sort
+      end
+    end
+
+
 
   end
 end

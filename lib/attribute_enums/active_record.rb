@@ -17,25 +17,36 @@ module AttributeEnums
       private
 
       def _attribute_enums_set_default
-        _if = ('%s.nil?' % @_attribute_name).to_sym 
-        before_validation(if: _if)do
-          write_attribute(@_attribute_name, @_default)
+        set_defaule_method_name = "set_defaule_#{@_attribute_name}"
+        before_validation set_defaule_method_name, if: :"read_attribute(:#{@_attribute_name}).nil?"
+        if @_boolean
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def #{set_defaule_method_name}
+              write_attribute(:#{@_attribute_name}, #{@_default})
+            end
+          RUBY
+        else
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def #{set_defaule_method_name}
+              write_attribute(:#{@_attribute_name}, :#{@_default})
+            end
+          RUBY
         end
       end
 
       def _attribute_enums_set_string_methods
         @_in.each do |_in|
-          define_method _attribute_enums_methods_string_attribute_method_name(_in) do
-            read_attribute(@_attribute_name).to_s == _in.to_s
-          end
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def #{_attribute_enums_methods_string_attribute_method_name(_in)}
+              read_attribute(:#{@_attribute_name}).to_s == '#{_in}'
+            end
+          RUBY
         end
       end
 
       def _attribute_enums_set_string_scopeds
         @_in.each do |_in|
-          class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            scope :#{_attribute_enums_scopeds_string_attribute_method_name(_in)}, ->{ where(#{@_attribute_name}: :#{_in}) }
-          RUBY
+          scope _attribute_enums_scopeds_string_attribute_method_name(_in), ->{ where(@_attribute_name => _in) }
         end
       end
       
@@ -46,12 +57,12 @@ module AttributeEnums
         end
       end
 
-      def _attribute_name_set_validate
-        unless @_validate.is_a?(Hash) and @_validate.delete(:allow_nil)
+      def _attribute_name_set_string_validate
+        unless @_validate.is_a?(Hash) and !@_validate[:allow_nil].nil?
           validates @_attribute_name, presence: true
         end
-        _unless = ('%s.nil?' % @_attribute_name).to_sym
-        validates @_attribute_name, inclusion: {in: @_inclusion}, unless: _unless
+
+        validates @_attribute_name, inclusion: {in: @_inclusion}, unless: :"read_attribute(:#{@_attribute_name}).nil?"
       end
 
       def _attribute_name_set_i18n_text

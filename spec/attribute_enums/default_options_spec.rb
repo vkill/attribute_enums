@@ -24,7 +24,7 @@ describe ":default options" do
     it do
       subject.gender = :female
       subject.valid?
-      subject.gender.should == :male
+      subject.gender.should == :female
     end
 
     it do
