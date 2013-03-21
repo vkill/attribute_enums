@@ -4,11 +4,11 @@ en:
       female: Girl
       male: Boy
     enable:
-      "true": "Yes"
-      "false": "No"
+      "true": "Enable"
+      "false": "Disable"
     person_gender:
       female: Girl
       male: Boy
     person_enable:
-      "true": "Yes"
-      "false": "No"
+      "true": "Enable"
+      "false": "Disable"

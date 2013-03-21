@@ -2,6 +2,9 @@
 require 'spec_helper'
 
 describe ":i18n options" do
+  #
+  # it i18n xxx_text and get_xxx_values methods result
+  #
   describe "string attribute" do
     describe "default translation namespace" do
       let(:model_klass) do
@@ -21,7 +24,7 @@ describe ":i18n options" do
 
       it do
         I18n.locale = :en
-        model_klass.get_gender_values.should == [['Girl', 'female'], ['Boy', 'male']].sort
+        model_klass.get_gender_values.should == [['Boy', 'male'], ['Girl', 'female']]
       end
 
       it do
@@ -67,7 +70,7 @@ describe ":i18n options" do
       it do
         I18n.locale = :en
         model_klass.get_gender_values.first[0].should_not start_with('translation missing:')
-        model_klass.get_gender_values.should == [['Girl', 'female'], ['Boy', 'male']].sort
+        model_klass.get_gender_values.should == [['Boy', 'male'], ['Girl', 'female']]
       end
 
       it do
@@ -96,7 +99,7 @@ describe ":i18n options" do
 
       it do
         I18n.locale = :en
-        model_klass.get_enable_values.should == [['Yes', true], ['No', false]].sort
+        model_klass.get_enable_values.should == [['Enable', true], ['Disable', false]]
       end
 
       it do
@@ -106,7 +109,7 @@ describe ":i18n options" do
       it do
         I18n.locale = :en
         subject.enable = true
-        subject.enable_text.should == 'Yes'
+        subject.enable_text.should == 'Enable'
       end
     end
   end

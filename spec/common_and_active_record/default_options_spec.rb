@@ -36,6 +36,16 @@ describe ":default options" do
         end
       end.should raise_error(Exception, /default value not match/)
     end
+
+    it do
+      my_person = Person.dup
+      lambda do
+        my_person.instance_eval do
+          include AttributeEnums::ActiveRecord
+          attribute_enums :gender, in: [:male, :female], default: 'male'
+        end
+      end.should_not raise_error(Exception, /default value not match/)
+    end
   end
 
   describe "boolean attribute" do
