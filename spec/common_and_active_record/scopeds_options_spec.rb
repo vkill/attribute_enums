@@ -65,6 +65,9 @@ describe ":scopeds options" do
         model_klass.should respond_to(:enable)
       end
       it do
+        model_klass.should_not respond_to(:disable)
+      end
+      it do
         model_klass.delete_all
         gender_a = model_klass.create!(enable: true)
         gender_b = model_klass.create!(enable: true)

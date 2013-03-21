@@ -20,6 +20,8 @@ In your app's `Gemfile`, add:
 or
 
     gem "attribute_enums", require: "attribute_enums/active_record"
+    #app/models/xxx.rb
+    include ::AttributeEnums::ActiveRecord
 
 
 ##Usage Example
@@ -42,30 +44,8 @@ or
     #app/models/user.rb
     class User < ActiveRecord::Basse
       attribute_enums :gender, in: [:female, :male], default: :male, scopeds: true, ask_methods: true, i18n: true, validate: true
-      attribute_enums :enable, boolean: true, default: true, scopeds: :disable, i18n: {t_prefix: :gender_}
+      attribute_enums :enable, boolean: true, default: true, scopeds: :disable, i18n: {t_prefix: :person_}
     end
-
-
-##Options
-
-###in or boolean
-
-if use 'boolean', auto ignore 'in'.
-
-this option generate get_attr_values and attr_text methods
-
-    #active_record
-    User.get_gender_values  =>  [["female", "female"], ["male", "male"]]
-    User.get_enable_values  =>  [["Yes", true], ["No", false]]
-    user = User.create(:gender => :male, :enable => true)
-    user.gender_text  =>  "male"
-    user.enable_text  =>  "Yes"
-
-you can use get_attr_values on rails `select` helper and more.
-
-###i18n and use example
-
-default `false`
 
     # in config/locales/enums_en.yml
     en:
@@ -83,24 +63,45 @@ default `false`
           "true": "Enable"
           "false": "Disable"
 
+##Options
+
+###in or boolean
+
+if use 'boolean', auto ignore 'in'.
+
+this option generate get_attr_values and attr_text methods
+
+    #active_record
+    User.get_gender_values
+    User.get_enable_values
+    user = User.new(gender: :male, enable: true)
+    user.gender_text
+    user.enable_text
+
+you can use get_attr_values on rails `select` helper and more.
+
+###i18n and use example
+
+default `false`
+
 set `true`, i18n is valid get_attr_values and attr_text methods.
 
     #active_record
-    User.get_gender_values  =>  [["Girl", "female"], ["Boy", "male"]]
-    User.get_enable_values  =>  [["Yes", true], ["Disable", false]]
-    user = User.create(:gender => :male, :enable => true)
-    user.gender_text  =>  "Boy"
-    user.enable_text  =>  "Enable"
+    User.get_gender_values  #=> [["Girl", "female"], ["Boy", "male"]]
+    User.get_enable_values  #=> [["Enable", true], ["Disable", false]]
+    user = User.new(gender: :male, enable: true)
+    user.gender_text        #=> "Boy"
+    user.enable_text        #=> "Enable"
 
 ###scopes and use example
 
 default `false`
 
     #active_record
-    User.male         => User.where(gender: :male)
-    User.female       => User.where(gender: :female)
-    User.enable       => User.where(enable: true)
-    User.disable   => User.where(enable: false)
+    User.male         #=> User.where(gender: :male)
+    User.female       #=> User.where(gender: :female)
+    User.enable       #=> User.where(enable: true)
+    User.disable      #=> User.where(enable: false)
 
 ###validate
 
@@ -113,13 +114,18 @@ if you want support attribute value is nil, you can use `validate: {allow_nil: t
 default `false`, it only support `in` option.
 
     #active_record
-    user = User.create(gender: :male, enable: true)
-    user.male?    =>  true
-    user.female?  =>  false
+    user = User.new(gender: :male, enable: true)
+    user.male?    #=> true
+    user.female?  #=> false
 
 ###default
 
 if your defined `default`, it set attribute `default` value before validate.
+
+    #active_record
+    user = User.new
+    user.valid?
+    user.gender #=> :male
 
 Note: if your migration defined field default, this is invalidation.
 

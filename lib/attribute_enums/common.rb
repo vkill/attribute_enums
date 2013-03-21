@@ -1,6 +1,9 @@
 module AttributeEnums
   module Common
+
     def attribute_enums(attribute_name, options={})
+      _ae_init_instance_variables
+
       @_ae_attribute_name = attribute_name.to_s
 
       @_ae_in = options.has_key?(:in) ? Array(options.delete(:in)) : []
@@ -50,9 +53,29 @@ module AttributeEnums
         _ae_set_string_ask_methods if @_ae_ask_methods
         _attribute_name_set_string_validate if @_ae_validate
       end
+
+      _ae_remove_instance_variables
     end
 
+
+
     private
+
+    def _ae_instance_variable_names
+      %w(attribute_name in boolean default ask_methods scopeds validate i18n inclusion)
+    end
+
+    def _ae_init_instance_variables
+      _ae_instance_variable_names.each do |name|
+        instance_variable_set "@_ae_#{name}", nil
+      end
+    end
+
+    def _ae_remove_instance_variables
+      _ae_instance_variable_names.each do |name|
+        remove_instance_variable "@_ae_#{name}"
+      end
+    end
 
     def _ae_valid_prefix?(prefix)
       (prefix.is_a?(String) or prefix.is_a?(Symbol)) and !prefix.empty?
@@ -100,33 +123,41 @@ module AttributeEnums
 
     def _attribute_name_set_boolean_values_method
       if @_ae_i18n and defined?(::I18n)
-        define_singleton_method _ae_values_method_name do
-          @_ae_in.map do |_in|
-            [I18n.translate(('enums.%s%s.%s' % [_ae_i18n_t_prefix, @_ae_attribute_name, _in]).to_sym), _in]
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def self.#{_ae_values_method_name}
+            #{@_ae_in}.map do |_in|
+              [I18n.translate('enums.%s%s.%s' % ['#{_ae_i18n_t_prefix}', :#{@_ae_attribute_name}, _in]), _in]
+            end
           end
-        end
+        RUBY
       else
-        define_singleton_method _ae_values_method_name do
-          @_ae_in.map do |_in|
-            [(_in ? 'Yes' : 'No'), _in]
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def self.#{_ae_values_method_name}
+            #{@_ae_in}.map do |_in|
+              [(_in ? 'Yes' : 'No'), _in]
+            end
           end
-        end
+        RUBY
       end
     end
 
     def _attribute_name_set_string_values_method
       if @_ae_i18n and defined?(::I18n)
-        define_singleton_method _ae_values_method_name do
-          @_ae_in.map do |_in|
-            [I18n.translate(('enums.%s%s.%s' % [_ae_i18n_t_prefix, @_ae_attribute_name, _in]).to_sym), _in.to_s]
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def self.#{_ae_values_method_name}
+            #{@_ae_in}.map do |_in|
+              [I18n.translate('enums.%s%s.%s' % ['#{_ae_i18n_t_prefix}', :#{@_ae_attribute_name}, _in]), _in.to_s]
+            end
           end
-        end
+        RUBY
       else
-        define_singleton_method _ae_values_method_name do
-          @_ae_in.map do |_in|
-            [_in.to_s, _in.to_s]
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def self.#{_ae_values_method_name}
+            #{@_ae_in}.map do |_in|
+              [_in.to_s, _in.to_s]
+            end
           end
-        end
+        RUBY
       end
     end
 

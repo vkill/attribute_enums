@@ -1,0 +1,9 @@
+en:
+  enums:
+    status:
+      pending: Pending
+      accredited: Accredited
+    removed:
+      "true": "Yes"
+      "false": "No"
+

@@ -8,9 +8,16 @@ ActiveRecord::Schema.define do
     t.string :gender
     t.boolean :enable
   end
+  create_table "users", :force => true do |t|
+    t.string :status
+    t.string :gender
+    t.boolean :removed
+    t.boolean :enable
+  end
 end
 class Person < ActiveRecord::Base
   self.table_name = "persons"
 end
-
-# binding.pry
+class User < ActiveRecord::Base
+  self.table_name = "users"
+end
