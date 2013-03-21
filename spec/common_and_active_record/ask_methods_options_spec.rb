@@ -8,7 +8,7 @@ describe ":methods options" do
         _person = Person.dup
         _person.instance_eval do
           include AttributeEnums::ActiveRecord
-          attribute_enums :gender, in: [:male, :female], methods: true
+          attribute_enums :gender, in: [:male, :female], ask_methods: true
         end
         _person
       end
@@ -32,7 +32,7 @@ describe ":methods options" do
         _person = Person.dup
         _person.instance_eval do
           include AttributeEnums::ActiveRecord
-          attribute_enums :gender, in: [:male, :female], methods: {prefix: 'gender_'}
+          attribute_enums :gender, in: [:male, :female], ask_methods: {prefix: 'gender_'}
         end
         _person
       end
