@@ -1,14 +1,14 @@
 #AttributeEnums
 
-AttributeEnums is a model attribute enums plugin for Rails3. like 'symbolize' gem.
+AttributeEnums is a model attribute enums plugin for Rails3.
 
 * https://github.com/vkill/attribute_enums
 
 ##Supported versions
 
-* Ruby 1.8.7, 1.9.2, 1.9.3
+* Ruby 1.9
 
-* Rails 3.0.x, 3.1
+* Rails 3
 
 
 ##Installation
@@ -17,9 +17,9 @@ In your app's `Gemfile`, add:
 
     gem "attribute_enums"
 
-Then run:
+or
 
-    > bundle
+    gem "attribute_enums", require: "attribute_enums/active_record"
 
 
 ##Usage Example
@@ -41,80 +41,81 @@ Then run:
 
     #app/models/user.rb
     class User < ActiveRecord::Basse
-      attribute_enums :gender, :in => [:female, :male]
-      attribute_enums :enable, :booleans => true
+      attribute_enums :gender, in: [:female, :male], default: :male, scopeds: true, ask_methods: true, i18n: true, validate: true
+      attribute_enums :enable, boolean: true, default: true, scopeds: :disable, i18n: {t_prefix: :gender_}
     end
 
 
 ##Options
 
-###booleans
+###in or boolean
 
-default `false`
+if use 'boolean', auto ignore 'in'.
 
-if use this, please don't use `in/within`.
+this option generate get_attr_values and attr_text methods
 
-###in/within
+    #active_record
+    User.get_gender_values  =>  [["female", "female"], ["male", "male"]]
+    User.get_enable_values  =>  [["Yes", true], ["No", false]]
+    user = User.create(:gender => :male, :enable => true)
+    user.gender_text  =>  "male"
+    user.enable_text  =>  "Yes"
 
-default `[]`
-
-if use this, please don't use `booleans`.
+you can use get_attr_values on rails `select` helper and more.
 
 ###i18n and use example
 
-default `true`
+default `false`
 
     # in config/locales/enums_en.yml
     en:
-      activerecord:
-        models:
-          user: User
-        attributes:
-          user:
-            gender: Gender
-            enable: Enable
-        enums:
-          user:
-            gender:
-              female: Girl
-              male: Boy
-            enable:
-              "true": "Yes"
-              "false": "No"
+      enums:
+        gender:
+          female: Girl
+          male: Boy
+        enable:
+          "true": "Enable"
+          "false": "Disable"
+        person_gender:
+          female: Girl
+          male: Boy
+        person_enable:
+          "true": "Enable"
+          "false": "Disable"
+
+set `true`, i18n is valid get_attr_values and attr_text methods.
+
+    #active_record
+    User.get_gender_values  =>  [["Girl", "female"], ["Boy", "male"]]
+    User.get_enable_values  =>  [["Yes", true], ["Disable", false]]
+    user = User.create(:gender => :male, :enable => true)
+    user.gender_text  =>  "Boy"
+    user.enable_text  =>  "Enable"
 
 ###scopes and use example
 
-default `true`
+default `false`
 
     #active_record
-    User.male         => User.where(:gender => :male)
-    User.female       => User.where(:gender => :female)
-    User.enable       => User.where(:enable => true)
-    User.not_enable   => User.where(:enable => false)
+    User.male         => User.where(gender: :male)
+    User.female       => User.where(gender: :female)
+    User.enable       => User.where(enable: true)
+    User.disable   => User.where(enable: false)
 
 ###validate
 
-default `true`
+default `false`, it only support `in` option.
 
-###allow_blank
+if you want support attribute value is nil, you can use `validate: {allow_nil: true}`
 
-default `false`, is valid with validate == true and in/within == true
+###ask_methods and use example
 
-###methods and use example
-
-default `true`
+default `false`, it only support `in` option.
 
     #active_record
-    User.get_gender_values  =>  [["female", "Girl"], ["male", "Boy"]]
-    User.gender_values      =>  {"female"=>"Girl", "male"=>"Boy"}
-    User.get_enable_values  =>  [[true, "Yes"], [false, "No"]]
-    User.enable_values      =>  {true=>"Yes", false=>"No"}
-    user = User.create(:gender => :male, :enable => true)
-    user.gender_text  =>  "Boy"
-    user.enable_text  =>  "Yes"
+    user = User.create(gender: :male, enable: true)
     user.male?    =>  true
     user.female?  =>  false
-    user.enable   =>  true
 
 ###default
 
@@ -123,12 +124,7 @@ if your defined `default`, it set attribute `default` value before validate.
 Note: if your migration defined field default, this is invalidation.
 
 
-##Run test for development
-
-    > guard
-
-
 ##Copyright
 
-Copyright (c) 2011 vkill.net .
+Copyright (c) 2011-2013 vkill.net .
 
