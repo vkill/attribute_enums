@@ -113,8 +113,8 @@ module AttributeEnums
 
     def _ae_i18n_t_prefix
       t_prefix = ''
-      if @_ae_scopeds.is_a?(Hash)
-        _t_prefix = @_ae_scopeds[:t_prefix]
+      if @_ae_i18n.is_a?(Hash)
+        _t_prefix = @_ae_i18n[:t_prefix]
         t_prefix = _t_prefix if _ae_valid_prefix?(_t_prefix)
       end
       t_prefix
