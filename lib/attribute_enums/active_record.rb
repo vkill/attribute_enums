@@ -81,12 +81,7 @@ module AttributeEnums
 
       def _attribute_name_set_boolean_text_method
         if @_ae_i18n and defined?(::I18n)
-          class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def #{_ae_text_method_name}
-              return '' if read_attribute(:#{@_ae_attribute_name}).nil?
-              I18n.translate('enums.%s%s.%s' % [self.class.send(:_ae_i18n_t_prefix), :#{@_ae_attribute_name}, read_attribute(:#{@_ae_attribute_name})])
-            end
-          RUBY
+          _attribute_name_set_text_method_with_i18n
         else
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{_ae_text_method_name}
@@ -99,12 +94,7 @@ module AttributeEnums
 
       def _attribute_name_set_string_text_method
         if @_ae_i18n and defined?(::I18n)
-          class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def #{_ae_text_method_name}
-              return '' if read_attribute(:#{@_ae_attribute_name}).nil?
-              I18n.translate('enums.%s%s.%s' % [self.class.send(:_ae_i18n_t_prefix), :#{@_ae_attribute_name}, read_attribute(:#{@_ae_attribute_name})])
-            end
-          RUBY
+          _attribute_name_set_text_method_with_i18n
         else
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{_ae_text_method_name}
@@ -113,6 +103,20 @@ module AttributeEnums
             end
           RUBY
         end
+      end
+
+      def _attribute_name_set_text_method_with_i18n
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{_ae_text_method_name}
+            return '' if read_attribute(:#{@_ae_attribute_name}).nil?
+            t_str = 'enums.'
+            t_str << '#{_ae_i18n_t_prefix}'
+            t_str << '#{@_ae_attribute_name}'
+            t_str << '.'
+            t_str << read_attribute(:#{@_ae_attribute_name}).to_s
+            I18n.translate(t_str)
+          end
+        RUBY
       end
 
     end
